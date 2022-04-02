@@ -1,40 +1,40 @@
 package com.example.demo;
 
 public class SubjectDto {
-    private String subjectName;
     private Long id;
-    private int subjectHours;
-    private int subjectCredits;
+    private String name;
+    private int hours;
+    private int credit;
 
-    public String getSubjectName() {
-        return subjectName;
+    public String getName() {
+        return name;
     }
 
     public Long getId() {
         return id;
     }
 
-    public int getSubjectHours() {
-        return subjectHours;
+    public int getHours() {
+        return hours;
     }
 
-    public int getSubjectCredits() {
-        return subjectCredits;
+    public int getCredit() {
+        return credit;
     }
 
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public void setSubjectHours(int subjectHours) {
-        this.subjectHours = subjectHours;
+    public void setHours(int hours) {
+        this.hours = hours;
     }
 
-    public void setSubjectCredits(int subjectCredits) {
-        this.subjectCredits = subjectCredits;
+    public void setCredit(int credit) {
+        this.credit = credit;
     }
 }
