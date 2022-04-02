@@ -18,9 +18,9 @@ public class SubjectService {
     private static SubjectDto mapToSubjectDto(SubjectEntity subjectEntity) {
         SubjectDto subjectDto = new SubjectDto();
 
-        subjectDto.setSubjectName(subjectEntity.getSubjectName());
-        subjectDto.setSubjectHours(subjectEntity.getSubjectHours());
-        subjectDto.setSubjectCredits(subjectEntity.getSubjectCredits());
+        subjectDto.setName(subjectEntity.getSubjectName());
+        subjectDto.setHours(subjectEntity.getSubjectHours());
+        subjectDto.setCredit(subjectEntity.getSubjectCredits());
         subjectDto.setId(subjectEntity.getId());
 
         return subjectDto;
@@ -62,9 +62,9 @@ public class SubjectService {
     public Long createSubject(SubjectDto subject){
         SubjectEntity subjectEntity = new SubjectEntity();
 
-        subjectEntity.setSubjectName(subject.getSubjectName());
-        subjectEntity.setSubjectHours(subject.getSubjectHours());
-        subjectEntity.setSubjectCredits(subject.getSubjectCredits());
+        subjectEntity.setSubjectName(subject.getName());
+        subjectEntity.setSubjectHours(subject.getHours());
+        subjectEntity.setSubjectCredits(subject.getCredit());
 
         this.subjectRepository.save(subjectEntity);
         return subjectEntity.getId();
@@ -84,9 +84,9 @@ public class SubjectService {
         Optional<SubjectEntity> byId = subjectRepository.findById(subjectId);
 
         if (byId.isPresent()) {
-            byId.get().setSubjectName(subjectDto.getSubjectName());
-            byId.get().setSubjectHours(subjectDto.getSubjectHours());
-            byId.get().setSubjectCredits(subjectDto.getSubjectCredits());
+            byId.get().setSubjectName(subjectDto.getName());
+            byId.get().setSubjectHours(subjectDto.getHours());
+            byId.get().setSubjectCredits(subjectDto.getCredit());
         }
     }
 }
