@@ -15,7 +15,7 @@ public class TeacherService {
         this.teacherRepository = teacherRepository;
     }
 
-    private static TeacherDto mapToCustomerDto(TeacherEntity teacherEntity){
+    private static TeacherDto mapToTeacherDto(TeacherEntity teacherEntity){
         TeacherDto teacherDto = new TeacherDto();
 
         teacherDto.setId(teacherEntity.getId());
@@ -50,7 +50,7 @@ public class TeacherService {
     public List<TeacherDto> getTeachers(String lastname){
         List<TeacherDto> teachers = new LinkedList<>();
         for(TeacherEntity c1 : teacherRepository.findAll()){
-            TeacherDto c2 = mapToCustomerDto(c1);
+            TeacherDto c2 = mapToTeacherDto(c1);
             teachers.add(c2);
         }
         return teachers;
@@ -60,7 +60,7 @@ public class TeacherService {
     public TeacherDto getTeacher(Long teacherId){
         Optional<TeacherEntity> byId = teacherRepository.findById(teacherId);
         if(byId.isPresent()){
-            return  mapToCustomerDto(byId.get());
+            return  mapToTeacherDto(byId.get());
         }
         return null;
     }

@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RestController
 public class StudentController {
     private StudentService studentService;
 
@@ -18,25 +19,25 @@ public class StudentController {
     }
 
     //LIST USER
-    @GetMapping("/api/student")
+    @GetMapping("/api/students")
     public List<StudentDto> getStudents(@RequestParam(required = false) String lastname){
         return studentService.getStudents(lastname);
     }
 
     //GET USER BY ID
-    @GetMapping("/api/users/{studentId}")
+    @GetMapping("/api/students/{studentId}")
     public StudentDto getStudent(@PathVariable Long studentId){
         return studentService.getStudent(studentId);
     }
 
     //UPDATE USER
-    @PutMapping("/api/users/{studentId}")
+    @PutMapping("/api/students/{studentId}")
     public void updateStudent(@PathVariable Long studentId, @RequestBody Student student){
         studentService.updateStudent(studentId, student);
     }
 
     //DELETE USER
-    @DeleteMapping("/api/users/{studentId}")
+    @DeleteMapping("/api/students/{studentId}")
     public void deleteStudent(@PathVariable Long studentId){
         studentService.deleteStudent(studentId);
     }

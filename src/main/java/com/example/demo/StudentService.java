@@ -15,16 +15,16 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-    private static StudentDto mapToCustomerDto(StudentEntity studentEntity){
+    private static StudentDto mapToStudentDto(StudentEntity studentEntity){
         StudentDto studentDto = new StudentDto();
 
-        studentDto.setId(studentDto.getId());
-        studentDto.setFirstName(studentDto.getFirstName());
-        studentDto.setLastName(studentDto.getLastName());
-        studentDto.setPassword(studentDto.getPassword());
-        studentDto.setEmail(studentDto.getEmail());
-        studentDto.setPhone(studentDto.getPhone());
-        studentDto.setKeyword(studentDto.getKeyword());
+        studentDto.setId(studentEntity.getId());
+        studentDto.setFirstName(studentEntity.getFirstName());
+        studentDto.setLastName(studentEntity.getLastName());
+        studentDto.setPassword(studentEntity.getPassword());
+        studentDto.setEmail(studentEntity.getEmail());
+        studentDto.setPhone(studentEntity.getPhone());
+        studentDto.setKeyword(studentEntity.getKeyword());
 
         return studentDto;
     }
@@ -50,7 +50,7 @@ public class StudentService {
     public List<StudentDto> getStudents(String lastname){
         List<StudentDto> students = new LinkedList<>();
         for(StudentEntity c1 : studentRepository.findAll()){
-            StudentDto c2 = mapToCustomerDto(c1);
+            StudentDto c2 = mapToStudentDto(c1);
             students.add(c2);
         }
         return students;
@@ -60,7 +60,7 @@ public class StudentService {
     public StudentDto getStudent(Long studentId){
         Optional<StudentEntity> byId = studentRepository.findById(studentId);
         if(byId.isPresent()){
-            return  mapToCustomerDto(byId.get());
+            return  mapToStudentDto(byId.get());
         }
         return null;
     }
