@@ -14,12 +14,12 @@ public class SubjectController {
     }
 
     @GetMapping("/api/subjects")
-    public List<SubjectDto> getSubject(@RequestParam(required = false) String subjectName) {
+    public List<SubjectListDto> getSubject(@RequestParam(required = false) String subjectName) {
         return subjectService.getSubjects(subjectName);
     }
 
     @GetMapping("/api/subjects/{subjectId}")
-    public SubjectDto getSubjectsById(@PathVariable Long subjectId){
+    public SubjectListDto getSubjectsById(@PathVariable Long subjectId){
         return subjectService.getSubjectById(subjectId);
     }
 

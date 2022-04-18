@@ -15,7 +15,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    private static UserDto mapToCustomerDto(UserEntity userEntity){
+    private static UserDto mapToUserDto(UserEntity userEntity){
         UserDto userDto = new UserDto();
 
         userDto.setId(userEntity.getId());
@@ -29,7 +29,6 @@ public class UserService {
         return userDto;
     }
 
-    //CREATE
     @Transactional
     public Long createUser(UserDto user){
         UserEntity userEntity = new UserEntity();
@@ -47,28 +46,25 @@ public class UserService {
         return userEntity.getId();
     }
 
-    //LIST USERS
     @Transactional
     public List<UserDto> getUsers(String lastname){
         List<UserDto> users = new LinkedList<>();
         for(UserEntity c1 : userRepository.findAll()){
-            UserDto c2 = mapToCustomerDto(c1);
+            UserDto c2 = mapToUserDto(c1);
             users.add(c2);
         }
         return users;
     }
 
-    //GET USER BY ID
     @Transactional
     public UserDto getUser(Long userId){
         Optional<UserEntity> byId = userRepository.findById(userId);
         if(byId.isPresent()){
-            return  mapToCustomerDto(byId.get());
+            return  mapToUserDto(byId.get());
         }
         return null;
     }
 
-    //UPDATE USER
     @Transactional
     public void updateUser(Long userId, User user){
         Optional<UserEntity> byId = userRepository.findById(userId);
@@ -83,7 +79,7 @@ public class UserService {
         }
 
     }
-    //DELETE USER
+
     @Transactional
     public void deleteUser(Long userId){
         Optional<UserEntity> byId = userRepository.findById(userId);

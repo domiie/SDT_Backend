@@ -9,35 +9,40 @@ import java.util.Optional;
 @Service
 public class SubjectService {
 
-    private final SubjectRepository subjectRepository;
+    private SubjectRepository subjectRepository;
+    private TeacherRepository teacherRepository;
 
-    public SubjectService(SubjectRepository subjectRepository){
+    public SubjectService(SubjectRepository subjectRepository, TeacherRepository teacherRepository){
         this.subjectRepository = subjectRepository;
+        this.teacherRepository = teacherRepository;
     }
 
-    private static SubjectDto mapToSubjectDto(SubjectEntity subjectEntity) {
-        SubjectDto subjectDto = new SubjectDto();
+    private static SubjectListDto mapToSubjectDto(SubjectEntity subjectEntity) {
+        SubjectListDto subjectListDto = new SubjectListDto();
 
-        subjectDto.setName(subjectEntity.getSubjectName());
-        subjectDto.setHours(subjectEntity.getSubjectHours());
-        subjectDto.setCredit(subjectEntity.getSubjectCredits());
-        subjectDto.setId(subjectEntity.getId());
+        subjectListDto.setName(subjectEntity.getSubjectName());
+        subjectListDto.setTeacherId(subjectEntity.getTeacher().getId());
+        subjectListDto.setTeacherFirstName(subjectEntity.getTeacher().getFirstName());
+        subjectListDto.setTeacherLastName(subjectEntity.getTeacher().getLastName());
+        subjectListDto.setHours(subjectEntity.getSubjectHours());
+        subjectListDto.setCredit(subjectEntity.getSubjectCredits());
+        subjectListDto.setId(subjectEntity.getId());
 
-        return subjectDto;
+        return subjectListDto;
     }
 
     @Transactional
-    public List<SubjectDto> getSubjects(String subjectName) {
-        List<SubjectDto> books = new LinkedList<>();
+    public List<SubjectListDto> getSubjects(String subjectName) {
+        List<SubjectListDto> books = new LinkedList<>();
         for (SubjectEntity b1 : subjectRepository.findAll()) {
-            SubjectDto b2 = mapToSubjectDto(b1);
+            SubjectListDto b2 = mapToSubjectDto(b1);
             books.add(b2);
         }
         return books;
     }
 
     @Transactional
-    public SubjectDto getSubjectByName(String subjectName){
+    public SubjectListDto getSubjectByName(String subjectName){
         Optional<SubjectEntity> byTitle = subjectRepository.findBySubjectName(subjectName);
 
         if(byTitle.isPresent()){
@@ -48,7 +53,7 @@ public class SubjectService {
     }
 
     @Transactional
-    public SubjectDto getSubjectById(Long subjectId){
+    public SubjectListDto getSubjectById(Long subjectId){
         Optional<SubjectEntity> byId = subjectRepository.findById(subjectId);
 
         if(byId.isPresent()){
@@ -62,9 +67,12 @@ public class SubjectService {
     public Long createSubject(SubjectDto subject){
         SubjectEntity subjectEntity = new SubjectEntity();
 
+        Optional<TeacherEntity> teacher = teacherRepository.findById(subject.getTeacherId());
+
         subjectEntity.setSubjectName(subject.getName());
         subjectEntity.setSubjectHours(subject.getHours());
         subjectEntity.setSubjectCredits(subject.getCredit());
+        subjectEntity.setTeacher(teacher.get());
 
         this.subjectRepository.save(subjectEntity);
         return subjectEntity.getId();
@@ -82,9 +90,9 @@ public class SubjectService {
     @Transactional
     public void updateSubject(Long subjectId, SubjectDto subjectDto){
         Optional<SubjectEntity> byId = subjectRepository.findById(subjectId);
-
         if (byId.isPresent()) {
             byId.get().setSubjectName(subjectDto.getName());
+            byId.get().setTeacher(teacherRepository.findById(subjectDto.getTeacherId()).get());
             byId.get().setSubjectHours(subjectDto.getHours());
             byId.get().setSubjectCredits(subjectDto.getCredit());
         }
