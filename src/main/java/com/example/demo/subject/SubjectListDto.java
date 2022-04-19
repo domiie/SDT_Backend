@@ -1,9 +1,28 @@
 package com.example.demo.subject;
 
-public class SubjectDto {
+public class SubjectListDto {
     private Long id;
     private String name;
     private Long teacherId;
+    private String teacherFirstName;
+    private String teacherLastName;
+
+    public String getTeacherFirstName() {
+        return teacherFirstName;
+    }
+
+    public void setTeacherFirstName(String teacherFirstName) {
+        this.teacherFirstName = teacherFirstName;
+    }
+
+    public String getTeacherLastName() {
+        return teacherLastName;
+    }
+
+    public void setTeacherLastName(String teacherLastName) {
+        this.teacherLastName = teacherLastName;
+    }
+
     private int hours;
     private int credit;
 

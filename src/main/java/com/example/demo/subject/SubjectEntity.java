@@ -2,6 +2,7 @@ package com.example.demo.subject;
 
 import com.example.demo.teacher.TeacherEntity;
 
+import javax.annotation.Generated;
 import javax.persistence.*;
 
 
@@ -11,7 +12,13 @@ public class SubjectEntity {
     @Id
     @GeneratedValue
     private Long id;
+
     private String subjectName;
+
+    @JoinColumn(name = "teacher_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private TeacherEntity teacher;
+
     private int subjectHours;
     private int subjectCredits;
 
@@ -21,6 +28,14 @@ public class SubjectEntity {
 
     public String getSubjectName() {
         return subjectName;
+    }
+
+    public TeacherEntity getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(TeacherEntity teacher) {
+        this.teacher = teacher;
     }
 
     public int getSubjectHours() {

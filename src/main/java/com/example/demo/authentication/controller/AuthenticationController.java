@@ -1,11 +1,12 @@
 package com.example.demo.authentication.controller;
 
 import com.example.demo.authentication.service.AuthenticationService;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.servlet.http.HttpServletResponse;
 import java.nio.charset.StandardCharsets;
@@ -13,6 +14,7 @@ import java.util.Base64;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class AuthenticationController {
     private final String AUTHORIZATION_HEADER = "Authorization";
     private final AuthenticationService authenticationService;
@@ -49,4 +51,7 @@ public class AuthenticationController {
         String token = authentication.get().substring("Bearer".length()).trim();
         authenticationService.tokenRemove(token);
     }
+
+
+
 }

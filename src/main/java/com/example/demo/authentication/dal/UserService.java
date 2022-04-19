@@ -21,10 +21,8 @@ public class UserService {
         userDto.setId(userEntity.getId());
         userDto.setFirstName(userEntity.getFirstName());
         userDto.setLastName(userEntity.getLastName());
-        userDto.setPassword(userEntity.getPassword());
         userDto.setEmail(userEntity.getEmail());
         userDto.setPhone(userEntity.getPhone());
-        userDto.setKeyword(userEntity.getKeyword());
 
         return userDto;
     }
@@ -35,10 +33,8 @@ public class UserService {
 
         userEntity.setFirstName(user.getFirstName());
         userEntity.setLastName(user.getLastName());
-        userEntity.setPassword(user.getPassword());
         userEntity.setEmail(user.getEmail());
         userEntity.setPhone(user.getPhone());
-        userEntity.setKeyword(user.getKeyword());
 
 
         this.userRepository.save(userEntity);
@@ -66,16 +62,14 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUser(Long userId, User user){
+    public void updateUser(Long userId, UserDto user){
         Optional<UserEntity> byId = userRepository.findById(userId);
 
         if (byId.isPresent()) {
             byId.get().setFirstName(user.getFirstName());
             byId.get().setLastName(user.getLastName());
-            byId.get().setPassword(user.getPassword());
             byId.get().setEmail(user.getEmail());
             byId.get().setPhone(user.getPhone());
-            byId.get().setKeyword(user.getKeyword());
         }
 
     }

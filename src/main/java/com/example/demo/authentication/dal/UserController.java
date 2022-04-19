@@ -4,7 +4,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
+@CrossOrigin
 public class UserController {
     private UserService userService;
 
@@ -32,7 +34,7 @@ public class UserController {
 
     //UPDATE USER
     @PutMapping("/api/users/{userId}")
-    public void updateUser(@PathVariable Long userId, @RequestBody User user){
+    public void updateUser(@PathVariable Long userId, @RequestBody UserDto user){
         userService.updateUser(userId, user);
     }
 
