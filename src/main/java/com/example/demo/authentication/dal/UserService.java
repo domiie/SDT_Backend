@@ -36,7 +36,6 @@ public class UserService {
         userEntity.setEmail(user.getEmail());
         userEntity.setPhone(user.getPhone());
 
-
         this.userRepository.save(userEntity);
 
         return userEntity.getId();
