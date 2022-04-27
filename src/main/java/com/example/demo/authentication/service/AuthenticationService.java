@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class AuthenticationService {
-    private static final int TOKEN_VALIDITY_IN_MINUTES = 15;
+    private static final int TOKEN_VALIDITY_IN_MINUTES = 30;
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;

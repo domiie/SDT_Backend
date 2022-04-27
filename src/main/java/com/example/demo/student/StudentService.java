@@ -40,7 +40,6 @@ public class StudentService {
         studentEntity.setPhone(student.getPhone());
         studentEntity.setKeyword(student.getKeyword());
 
-
         this.studentRepository.save(studentEntity);
 
         return studentEntity.getId();
@@ -78,7 +77,6 @@ public class StudentService {
             byId.get().setPhone(student.getPhone());
             byId.get().setKeyword(student.getKeyword());
         }
-
     }
 
     @Transactional
