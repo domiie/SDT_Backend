@@ -22,6 +22,17 @@ public class SubjectEntity {
     private int subjectHours;
     private int subjectCredits;
 
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     public Long getId() {
         return id;
     }

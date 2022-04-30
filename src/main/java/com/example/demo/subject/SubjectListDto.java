@@ -6,6 +6,15 @@ public class SubjectListDto {
     private Long teacherId;
     private String teacherFirstName;
     private String teacherLastName;
+    private Status status;
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
     public String getTeacherFirstName() {
         return teacherFirstName;

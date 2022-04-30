@@ -6,6 +6,15 @@ public class SubjectDto {
     private Long teacherId;
     private int hours;
     private int credit;
+    public Status status;
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
     public Long getTeacherId() {
         return teacherId;
@@ -46,4 +55,8 @@ public class SubjectDto {
     public void setCredit(int credit) {
         this.credit = credit;
     }
+
+
+
+
 }

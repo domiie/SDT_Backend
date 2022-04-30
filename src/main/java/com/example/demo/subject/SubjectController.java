@@ -14,8 +14,8 @@ public class SubjectController {
     }
 
     @GetMapping("/api/subjects")
-    public List<SubjectListDto> getSubject(@RequestParam(required = false) String subjectName) {
-        return subjectService.getSubjects(subjectName);
+    public List<SubjectListDto> getSubject(@RequestParam(required = false) Status status) {
+        return subjectService.getSubjects(status);
     }
 
     @GetMapping("/api/subjects/{subjectId}")

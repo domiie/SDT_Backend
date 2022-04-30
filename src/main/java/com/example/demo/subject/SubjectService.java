@@ -28,20 +28,31 @@ public class SubjectService {
         subjectListDto.setTeacherLastName(subjectEntity.getTeacher().getLastName());
         subjectListDto.setHours(subjectEntity.getSubjectHours());
         subjectListDto.setCredit(subjectEntity.getSubjectCredits());
+        subjectListDto.setStatus(subjectEntity.getStatus());
         subjectListDto.setId(subjectEntity.getId());
 
         return subjectListDto;
     }
 
     @Transactional
-    public List<SubjectListDto> getSubjects(String subjectName) {
+    public List<SubjectListDto> getSubjects(Status status) {
         List<SubjectListDto> books = new LinkedList<>();
-        for (SubjectEntity b1 : subjectRepository.findAll()) {
-            SubjectListDto b2 = mapToSubjectDto(b1);
-            books.add(b2);
+
+        if(status!=null){
+            for (SubjectEntity b1 : subjectRepository.findByStatus(status)) {
+                SubjectListDto b2 = mapToSubjectDto(b1);
+                books.add(b2);
+            }
+        }else {
+            for (SubjectEntity b1 : subjectRepository.findAll()) {
+                SubjectListDto b2 = mapToSubjectDto(b1);
+                books.add(b2);
+            }
         }
+
         return books;
     }
+
 
     @Transactional
     public SubjectListDto getSubjectByName(String subjectName){
@@ -74,6 +85,7 @@ public class SubjectService {
         subjectEntity.setSubjectName(subject.getName());
         subjectEntity.setSubjectHours(subject.getHours());
         subjectEntity.setSubjectCredits(subject.getCredit());
+        subjectEntity.setStatus(subject.getStatus());
         subjectEntity.setTeacher(teacher.get());
 
         this.subjectRepository.save(subjectEntity);
@@ -96,6 +108,7 @@ public class SubjectService {
             byId.get().setSubjectName(subjectDto.getName());
             byId.get().setTeacher(teacherRepository.findById(subjectDto.getTeacherId()).get());
             byId.get().setSubjectHours(subjectDto.getHours());
+            byId.get().setStatus(subjectDto.getStatus());
             byId.get().setSubjectCredits(subjectDto.getCredit());
         }
     }
