@@ -1,5 +1,6 @@
-package com.example.demo.authentication.dal;
+package com.example.demo.authentication.dal.repository;
 
+import com.example.demo.authentication.dal.entity.TokenEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

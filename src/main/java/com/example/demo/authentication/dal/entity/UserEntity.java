@@ -1,4 +1,7 @@
-package com.example.demo.authentication.dal;
+package com.example.demo.authentication.dal.entity;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -6,6 +9,7 @@ import java.util.Set;
 
 @Entity(name = "users")
 public class UserEntity {
+
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
@@ -18,6 +22,7 @@ public class UserEntity {
     private String passwordHash;
 
     @ManyToMany
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<RoleEntity> roles = new HashSet<>();
 
     private String firstName;
@@ -88,5 +93,5 @@ public class UserEntity {
     public void setRoles(Set<RoleEntity> roles) {
         this.roles = roles;
     }
-}
 
+}

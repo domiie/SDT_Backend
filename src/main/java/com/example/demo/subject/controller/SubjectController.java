@@ -1,5 +1,10 @@
-package com.example.demo.subject;
+package com.example.demo.subject.controller;
 
+import com.example.demo.subject.service.SubjectDto;
+import com.example.demo.subject.service.SubjectListDto;
+import com.example.demo.subject.service.SubjectService;
+import com.example.demo.subject.enumeration.Status;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +18,7 @@ public class SubjectController {
         this.subjectService = subjectService;
     }
 
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/api/subjects")
     public List<SubjectListDto> getSubject(@RequestParam(required = false) Status status) {
         return subjectService.getSubjects(status);

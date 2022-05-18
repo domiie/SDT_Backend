@@ -1,9 +1,14 @@
-package com.example.demo.subject;
+package com.example.demo.subject.service;
 
-import com.example.demo.teacher.TeacherEntity;
-import com.example.demo.teacher.TeacherRepository;
+import com.example.demo.authentication.dal.entity.UserEntity;
+import com.example.demo.authentication.dal.repository.UserRepository;
+import com.example.demo.subject.repository.SubjectRepository;
+import com.example.demo.subject.entity.SubjectEntity;
+import com.example.demo.subject.enumeration.Status;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -11,15 +16,15 @@ import java.util.Optional;
 @Service
 public class SubjectService {
 
-    private SubjectRepository subjectRepository;
-    private TeacherRepository teacherRepository;
+    private final SubjectRepository subjectRepository;
+    private final UserRepository userRepository;
 
-    public SubjectService(SubjectRepository subjectRepository, TeacherRepository teacherRepository){
+    public SubjectService(SubjectRepository subjectRepository, UserRepository userRepository){
         this.subjectRepository = subjectRepository;
-        this.teacherRepository = teacherRepository;
+        this.userRepository = userRepository;
     }
 
-    private static SubjectListDto mapToSubjectDto(SubjectEntity subjectEntity) {
+    private SubjectListDto mapToSubjectDto(SubjectEntity subjectEntity) {
         SubjectListDto subjectListDto = new SubjectListDto();
 
         subjectListDto.setName(subjectEntity.getSubjectName());
@@ -29,6 +34,9 @@ public class SubjectService {
         subjectListDto.setHours(subjectEntity.getSubjectHours());
         subjectListDto.setCredit(subjectEntity.getSubjectCredits());
         subjectListDto.setStatus(subjectEntity.getStatus());
+        subjectListDto.setCreationDate(subjectEntity.getCreationDate());
+        subjectListDto.setLastChangeDate(subjectEntity.getLastChangeDate());
+        subjectListDto.setLocked(subjectEntity.isLocked());
         subjectListDto.setId(subjectEntity.getId());
 
         return subjectListDto;
@@ -36,21 +44,21 @@ public class SubjectService {
 
     @Transactional
     public List<SubjectListDto> getSubjects(Status status) {
-        List<SubjectListDto> books = new LinkedList<>();
+        List<SubjectListDto> subjects = new LinkedList<>();
 
         if(status!=null){
             for (SubjectEntity b1 : subjectRepository.findByStatus(status)) {
                 SubjectListDto b2 = mapToSubjectDto(b1);
-                books.add(b2);
+                subjects.add(b2);
             }
         }else {
             for (SubjectEntity b1 : subjectRepository.findAll()) {
                 SubjectListDto b2 = mapToSubjectDto(b1);
-                books.add(b2);
+                subjects.add(b2);
             }
         }
 
-        return books;
+        return subjects;
     }
 
 
@@ -80,13 +88,16 @@ public class SubjectService {
     public Long createSubject(SubjectDto subject){
         SubjectEntity subjectEntity = new SubjectEntity();
 
-        Optional<TeacherEntity> teacher = teacherRepository.findById(subject.getTeacherId());
+        Optional<UserEntity> user = Optional.ofNullable(userRepository.findByUsername(subject.getTeacherUsername()));
 
         subjectEntity.setSubjectName(subject.getName());
         subjectEntity.setSubjectHours(subject.getHours());
         subjectEntity.setSubjectCredits(subject.getCredit());
         subjectEntity.setStatus(subject.getStatus());
-        subjectEntity.setTeacher(teacher.get());
+        subjectEntity.setTeacher(user.get());
+        subjectEntity.setCreationDate(LocalDate.now());
+        subjectEntity.setLocked(false);
+        subjectEntity.setLastChangeDate(LocalDateTime.now());
 
         this.subjectRepository.save(subjectEntity);
         return subjectEntity.getId();
@@ -106,10 +117,13 @@ public class SubjectService {
         Optional<SubjectEntity> byId = subjectRepository.findById(subjectId);
         if (byId.isPresent()) {
             byId.get().setSubjectName(subjectDto.getName());
-            byId.get().setTeacher(teacherRepository.findById(subjectDto.getTeacherId()).get());
+//            byId.get().setTeacher(userRepository.findById(subjectDto.getTeacherUsername()).get());
             byId.get().setSubjectHours(subjectDto.getHours());
             byId.get().setStatus(subjectDto.getStatus());
             byId.get().setSubjectCredits(subjectDto.getCredit());
+            byId.get().setCreationDate(subjectDto.getCreationDate());
+            byId.get().setLocked(subjectDto.isLocked());
+            byId.get().setLastChangeDate(LocalDateTime.now());
         }
     }
 }

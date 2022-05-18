@@ -1,11 +1,15 @@
-package com.example.demo.authentication.dal;
+package com.example.demo.authentication.dal.service;
 
-public class UserDto {
+import java.util.Set;
+
+public class UserRolesDto {
     private Long id;
+    private String username;
     private String firstName;
     private String lastName;
     private String email;
     private String phone;
+    private Set<String> roles;
 
     public Long getId() {
         return id;
@@ -13,6 +17,14 @@ public class UserDto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
     }
 
     public String getFirstName() {
@@ -47,4 +59,11 @@ public class UserDto {
         this.phone = phone;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public Set<String> getRoles() {
+        return roles;
+    }
 }

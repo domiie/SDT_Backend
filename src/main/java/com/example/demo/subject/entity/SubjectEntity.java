@@ -1,10 +1,13 @@
-package com.example.demo.subject;
+package com.example.demo.subject.entity;
 
-import com.example.demo.teacher.TeacherEntity;
+import com.example.demo.authentication.dal.entity.UserEntity;
+import com.example.demo.subject.enumeration.Status;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import javax.annotation.Generated;
 import javax.persistence.*;
-
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class SubjectEntity {
@@ -17,13 +20,42 @@ public class SubjectEntity {
 
     @JoinColumn(name = "teacher_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private TeacherEntity teacher;
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private UserEntity teacher;
 
     private int subjectHours;
     private int subjectCredits;
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    private LocalDate creationDate;
+    private LocalDateTime lastChangeDate;
+    private boolean isLocked;
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void setLocked(boolean locked) {
+        isLocked = locked;
+    }
+
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public LocalDateTime getLastChangeDate() {
+        return lastChangeDate;
+    }
+
+    public void setLastChangeDate(LocalDateTime lastChangeDate) {
+        this.lastChangeDate = lastChangeDate;
+    }
 
     public Status getStatus() {
         return status;
@@ -41,11 +73,11 @@ public class SubjectEntity {
         return subjectName;
     }
 
-    public TeacherEntity getTeacher() {
+    public UserEntity getTeacher() {
         return teacher;
     }
 
-    public void setTeacher(TeacherEntity teacher) {
+    public void setTeacher(UserEntity teacher) {
         this.teacher = teacher;
     }
 
@@ -72,6 +104,5 @@ public class SubjectEntity {
     public int getSubjectCredits() {
         return subjectCredits;
     }
-
 
 }

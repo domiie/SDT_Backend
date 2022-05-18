@@ -1,10 +1,11 @@
-package com.example.demo.authentication.dal;
+package com.example.demo.authentication.dal.entity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity(name = "token")
 public class TokenEntity {
+
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)

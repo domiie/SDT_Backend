@@ -1,6 +1,7 @@
-package com.example.demo.subject;
+package com.example.demo.subject.repository;
 
-import org.springframework.data.domain.Example;
+import com.example.demo.subject.entity.SubjectEntity;
+import com.example.demo.subject.enumeration.Status;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

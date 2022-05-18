@@ -1,6 +1,11 @@
 package com.example.demo.authentication.service;
 
-import com.example.demo.authentication.dal.*;
+import com.example.demo.authentication.dal.service.UserRolesDto;
+import com.example.demo.authentication.dal.entity.RoleEntity;
+import com.example.demo.authentication.dal.entity.TokenEntity;
+import com.example.demo.authentication.dal.entity.UserEntity;
+import com.example.demo.authentication.dal.repository.TokenRepository;
+import com.example.demo.authentication.dal.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -16,7 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class AuthenticationService {
-    private static final int TOKEN_VALIDITY_IN_MINUTES = 30;
+    private static final int TOKEN_VALIDITY_IN_MINUTES = 15;
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
@@ -29,26 +35,40 @@ public class AuthenticationService {
 
     @Transactional
     public String authenticate(String username, String password) {
-        Optional<UserEntity> optionalUser = userRepository.findByUsername(username);
+        UserEntity optionalUser = userRepository.findByUsername(username);
 
-        if (optionalUser.isEmpty()) {
+        if (optionalUser == null) {
             throw new AuthenticationCredentialsNotFoundException("Username and/or password do not match!");
         }
 
         if ( ! passwordEncoder.matches(password,
-                optionalUser.get().getPasswordHash())) {
+                optionalUser.getPasswordHash())) {
             throw new AuthenticationCredentialsNotFoundException("Username and/or password do not match!");
         }
 
         TokenEntity token = new TokenEntity();
         String randomString = UUID.randomUUID().toString();
         token.setToken(randomString);
-        token.setUser(optionalUser.get());
+        token.setUser(optionalUser);
         token.setValidUntil(LocalDateTime.now());
 
         tokenRepository.save(token);
 
         return token.getToken();
+    }
+
+    public UserRolesDto mapToUserRolesDto(UserEntity user, Set<String> roles){
+        UserRolesDto userRolesDto = new UserRolesDto();
+
+        userRolesDto.setId(user.getId());
+        userRolesDto.setUsername(user.getUsername());
+        userRolesDto.setRoles(roles);
+        userRolesDto.setFirstName(user.getFirstName());
+        userRolesDto.setLastName(user.getLastName());
+        userRolesDto.setEmail(user.getEmail());
+        userRolesDto.setPhone(user.getPhone());
+
+        return userRolesDto;
     }
 
     @Transactional
@@ -61,12 +81,12 @@ public class AuthenticationService {
 
         validateTokenExpiration(optionalToken.get());
 
-        Set<RoleEntity> roles = optionalToken.get().getUser().getRoles();
+        Collection<RoleEntity> roles = optionalToken.get().getUser().getRoles();
         Set<String> roleNames = roles.stream()
                 .map( entry -> entry.getRoleName())
                 .collect(Collectors.toSet());
 
-        return new UserRolesDto(optionalToken.get().getUser().getUsername(), roleNames);
+        return mapToUserRolesDto(optionalToken.get().getUser(), roleNames);
     }
 
     private void validateTokenExpiration(TokenEntity token) {
@@ -82,4 +102,5 @@ public class AuthenticationService {
     public void tokenRemove(String token) {
         tokenRepository.deleteByToken(token);
     }
+
 }

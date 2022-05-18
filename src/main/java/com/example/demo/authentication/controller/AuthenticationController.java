@@ -1,12 +1,9 @@
 package com.example.demo.authentication.controller;
 
 import com.example.demo.authentication.service.AuthenticationService;
-import org.springframework.context.annotation.Bean;
+import com.example.demo.authentication.dal.service.UserRolesDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.servlet.http.HttpServletResponse;
 import java.nio.charset.StandardCharsets;
@@ -24,7 +21,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/api/authentication")
-    public void login(@RequestHeader(value = AUTHORIZATION_HEADER, required = false) Optional<String> authentication,
+    public UserRolesDto login(@RequestHeader(value = AUTHORIZATION_HEADER, required = false) Optional<String> authentication,
                       HttpServletResponse response) {
         if (authentication.isEmpty()) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
@@ -36,6 +33,7 @@ public class AuthenticationController {
 
         response.setStatus(HttpStatus.OK.value());
         response.addHeader(AUTHORIZATION_HEADER, "Bearer " + token);
+        return authenticationService.authenticate(token);
     }
 
     private static String[] credentialsDecode(String authorization) {
@@ -44,6 +42,11 @@ public class AuthenticationController {
         String credentials = new String(credDecoded, StandardCharsets.UTF_8);
 
         return  credentials.split(":", 2);
+    }
+
+    @GetMapping("/api/authentication/{token}")
+    public UserRolesDto getRoles(@PathVariable String token){
+       return this.authenticationService.authenticate(token);
     }
 
     @DeleteMapping("/api/authentication")

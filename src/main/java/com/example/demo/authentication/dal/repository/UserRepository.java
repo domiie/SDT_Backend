@@ -1,5 +1,6 @@
-package com.example.demo.authentication.dal;
+package com.example.demo.authentication.dal.repository;
 
+import com.example.demo.authentication.dal.entity.UserEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,8 +11,9 @@ import java.util.Optional;
 public interface UserRepository extends CrudRepository<UserEntity, Long> {
     @Override
     List<UserEntity> findAll();
-    public Optional<UserEntity> findById(Integer userId);
-    public Optional<UserEntity> findByUsername(String username);
+    Optional<UserEntity> findById(Integer userId);
+    UserEntity findByUsername(String username);
+    List<UserEntity> findByRoles(String role);
 }
 
 

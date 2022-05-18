@@ -1,7 +1,7 @@
 package com.example.demo.authentication.core;
 
 import com.example.demo.authentication.service.AuthenticationService;
-import com.example.demo.authentication.service.UserRolesDto;
+import com.example.demo.authentication.dal.service.UserRolesDto;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -41,7 +41,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                 .collect(Collectors.toList());
 
         UsernamePasswordAuthenticationToken authentication =
-                new UsernamePasswordAuthenticationToken(userRoles.getUserName(),null, roles);
+                new UsernamePasswordAuthenticationToken(userRoles.getUsername(),null, roles);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 

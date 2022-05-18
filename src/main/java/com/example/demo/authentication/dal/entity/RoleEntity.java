@@ -1,12 +1,14 @@
-package com.example.demo.authentication.dal;
+package com.example.demo.authentication.dal.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity(name = "roles")
 public class RoleEntity {
+
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
@@ -14,6 +16,11 @@ public class RoleEntity {
 
     @Column(name = "role_name")
     private String roleName;
+
+    @Transient
+    @ManyToMany
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Set<UserEntity> users;
 
     public Long getId() {
         return id;
