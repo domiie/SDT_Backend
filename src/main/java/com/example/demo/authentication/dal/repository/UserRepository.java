@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface UserRepository extends CrudRepository<UserEntity, Long> {
     @Override
     List<UserEntity> findAll();
-    Optional<UserEntity> findById(Integer userId);
+    Optional<UserEntity> findById(Long userId);
     UserEntity findByUsername(String username);
     List<UserEntity> findByRoles(String role);
 }

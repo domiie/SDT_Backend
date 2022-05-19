@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class SubjectDto {
     private Long id;
     private String name;
-    private String teacherUsername;
+    private Long teacherId;
     private int hours;
     private int credit;
     private Status status;
@@ -53,12 +53,12 @@ public class SubjectDto {
         this.status = status;
     }
 
-    public String getTeacherUsername() {
-        return teacherUsername;
+    public Long getTeacherId() {
+        return teacherId;
     }
 
-    public void setTeacherUsername(String teacherUsername) {
-        this.teacherUsername = teacherUsername;
+    public void setTeacherId(Long teacherId) {
+        this.teacherId = teacherId;
     }
 
     public String getName() {

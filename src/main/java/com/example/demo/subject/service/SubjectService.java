@@ -88,7 +88,7 @@ public class SubjectService {
     public Long createSubject(SubjectDto subject){
         SubjectEntity subjectEntity = new SubjectEntity();
 
-        Optional<UserEntity> user = Optional.ofNullable(userRepository.findByUsername(subject.getTeacherUsername()));
+        Optional<UserEntity> user = userRepository.findById(subject.getTeacherId());
 
         subjectEntity.setSubjectName(subject.getName());
         subjectEntity.setSubjectHours(subject.getHours());
@@ -117,7 +117,7 @@ public class SubjectService {
         Optional<SubjectEntity> byId = subjectRepository.findById(subjectId);
         if (byId.isPresent()) {
             byId.get().setSubjectName(subjectDto.getName());
-//            byId.get().setTeacher(userRepository.findById(subjectDto.getTeacherUsername()).get());
+//            byId.get().setTeacher(userRepository.findById(subjectDto.getTeacherId()).get());
             byId.get().setSubjectHours(subjectDto.getHours());
             byId.get().setStatus(subjectDto.getStatus());
             byId.get().setSubjectCredits(subjectDto.getCredit());
