@@ -1,10 +1,10 @@
 package com.example.demo.subject.controller;
 
+import com.example.demo.authentication.dal.entity.UserEntity;
 import com.example.demo.subject.service.SubjectDto;
 import com.example.demo.subject.service.SubjectListDto;
 import com.example.demo.subject.service.SubjectService;
 import com.example.demo.subject.enumeration.Status;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +23,17 @@ public class SubjectController {
     public List<SubjectListDto> getSubject(@RequestParam(required = false) Status status) {
         return subjectService.getSubjects(status);
     }
+
+    @GetMapping("/api/subjects/hours")
+    public List<SubjectListDto> getSubjectsByHours(@RequestParam(required = false) int hours) {
+        return subjectService.getSubjectsByHours(hours);
+    }
+
+    @GetMapping("/api/subjects/credits")
+    public List<SubjectListDto> getSubjectsByCredits(@RequestParam(required = false) int credits) {
+        return subjectService.getSubjectsByCredits(credits);
+    }
+
 
     @GetMapping("/api/subjects/{subjectId}")
     public SubjectListDto getSubjectsById(@PathVariable Long subjectId){

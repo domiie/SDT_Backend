@@ -2,6 +2,7 @@ package com.example.demo.subject.service;
 
 import com.example.demo.authentication.dal.entity.UserEntity;
 import com.example.demo.authentication.dal.repository.UserRepository;
+import com.example.demo.authentication.dal.service.UserService;
 import com.example.demo.subject.repository.SubjectRepository;
 import com.example.demo.subject.entity.SubjectEntity;
 import com.example.demo.subject.enumeration.Status;
@@ -74,6 +75,45 @@ public class SubjectService {
     }
 
     @Transactional
+    public List<SubjectListDto> getSubjectsByHours(int subjectHours){
+        List<SubjectListDto> hours = new LinkedList<>();
+
+        if(hours != null){
+            for (SubjectEntity b1 : subjectRepository.findBySubjectHours(subjectHours)) {
+                SubjectListDto b2 = mapToSubjectDto(b1);
+                hours.add(b2);
+            }
+        }else {
+            for (SubjectEntity b1 : subjectRepository.findAll()) {
+                SubjectListDto b2 = mapToSubjectDto(b1);
+                hours.add(b2);
+            }
+        }
+
+        return hours;
+    }
+
+    @Transactional
+    public List<SubjectListDto> getSubjectsByCredits(int subjectCredits) {
+        List<SubjectListDto> credits = new LinkedList<>();
+
+        if(credits != null){
+            for (SubjectEntity b1 : subjectRepository.findBySubjectCredits(subjectCredits)) {
+                SubjectListDto b2 = mapToSubjectDto(b1);
+                credits.add(b2);
+            }
+        }else {
+            for (SubjectEntity b1 : subjectRepository.findAll()) {
+                SubjectListDto b2 = mapToSubjectDto(b1);
+                credits.add(b2);
+            }
+        }
+
+        return credits;
+    }
+
+
+    @Transactional
     public SubjectListDto getSubjectById(Long subjectId){
         Optional<SubjectEntity> byId = subjectRepository.findById(subjectId);
 
@@ -126,4 +166,6 @@ public class SubjectService {
             byId.get().setLastChangeDate(LocalDateTime.now());
         }
     }
+
+
 }

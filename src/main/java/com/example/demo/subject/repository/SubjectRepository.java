@@ -1,5 +1,6 @@
 package com.example.demo.subject.repository;
 
+import com.example.demo.authentication.dal.entity.UserEntity;
 import com.example.demo.subject.entity.SubjectEntity;
 import com.example.demo.subject.enumeration.Status;
 import org.springframework.data.repository.CrudRepository;
@@ -15,5 +16,10 @@ public interface SubjectRepository extends CrudRepository<SubjectEntity, Long>  
 
     List<SubjectEntity> findByStatus(Status status);
 
+    List<SubjectEntity> findBySubjectHours(int subjectHours);
+
+    List<SubjectEntity> findBySubjectCredits(int subjectHours);
+
+    SubjectEntity[] findByTeacherFirstName(String firstName);
 }
 
