@@ -18,8 +18,8 @@ public interface SubjectRepository extends CrudRepository<SubjectEntity, Long>  
 
     List<SubjectEntity> findBySubjectHours(int subjectHours);
 
-    List<SubjectEntity> findBySubjectCredits(int subjectHours);
+    List<SubjectEntity> findBySubjectCredits(int subjectCredits);
 
-    SubjectEntity[] findByTeacherFirstName(String firstName);
+    SubjectEntity[] findByTeacher(UserEntity ids);
 }
 

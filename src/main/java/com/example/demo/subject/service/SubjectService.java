@@ -2,12 +2,13 @@ package com.example.demo.subject.service;
 
 import com.example.demo.authentication.dal.entity.UserEntity;
 import com.example.demo.authentication.dal.repository.UserRepository;
-import com.example.demo.authentication.dal.service.UserService;
 import com.example.demo.subject.repository.SubjectRepository;
 import com.example.demo.subject.entity.SubjectEntity;
 import com.example.demo.subject.enumeration.Status;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import javax.validation.constraints.Null;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
@@ -75,16 +76,11 @@ public class SubjectService {
     }
 
     @Transactional
-    public List<SubjectListDto> getSubjectsByHours(int subjectHours){
+    public List<SubjectListDto> getSubjectsByHours(Integer subjectHours){
         List<SubjectListDto> hours = new LinkedList<>();
 
-        if(hours != null){
+        if(subjectHours != null){
             for (SubjectEntity b1 : subjectRepository.findBySubjectHours(subjectHours)) {
-                SubjectListDto b2 = mapToSubjectDto(b1);
-                hours.add(b2);
-            }
-        }else {
-            for (SubjectEntity b1 : subjectRepository.findAll()) {
                 SubjectListDto b2 = mapToSubjectDto(b1);
                 hours.add(b2);
             }
@@ -94,22 +90,53 @@ public class SubjectService {
     }
 
     @Transactional
-    public List<SubjectListDto> getSubjectsByCredits(int subjectCredits) {
+    public List<SubjectListDto> getSubjectsByCredits(Integer subjectCredits) {
         List<SubjectListDto> credits = new LinkedList<>();
 
-        if(credits != null){
+        if(subjectCredits != null){
             for (SubjectEntity b1 : subjectRepository.findBySubjectCredits(subjectCredits)) {
-                SubjectListDto b2 = mapToSubjectDto(b1);
-                credits.add(b2);
-            }
-        }else {
-            for (SubjectEntity b1 : subjectRepository.findAll()) {
                 SubjectListDto b2 = mapToSubjectDto(b1);
                 credits.add(b2);
             }
         }
 
         return credits;
+    }
+
+    @Transactional
+    public List<SubjectListDto> getSubjectsByTeacherFirstName(String firstname) {
+        List<SubjectListDto> subjects = new LinkedList<>();
+        List<UserEntity> teacher = this.userRepository.findByFirstName(firstname);
+
+        if(firstname != null){
+            for(UserEntity ids : teacher){
+                for (SubjectEntity b1 : subjectRepository.findByTeacher(ids)) {
+                        SubjectListDto b2 = mapToSubjectDto(b1);
+                        subjects.add(b2);
+                }
+            }
+
+        }
+
+        return subjects;
+    }
+
+    @Transactional
+    public List<SubjectListDto> getSubjectsByTeacherLastName(String lastname) {
+        List<SubjectListDto> subjects = new LinkedList<>();
+        List<UserEntity> teacher = this.userRepository.findByLastName(lastname);
+
+        if(lastname != null){
+            for(UserEntity ids : teacher){
+                for (SubjectEntity b1 : subjectRepository.findByTeacher(ids)) {
+                    SubjectListDto b2 = mapToSubjectDto(b1);
+                    subjects.add(b2);
+                }
+            }
+
+        }
+
+        return subjects;
     }
 
 
@@ -166,6 +193,4 @@ public class SubjectService {
             byId.get().setLastChangeDate(LocalDateTime.now());
         }
     }
-
-
 }

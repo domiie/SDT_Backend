@@ -5,6 +5,7 @@ import com.example.demo.subject.service.SubjectDto;
 import com.example.demo.subject.service.SubjectListDto;
 import com.example.demo.subject.service.SubjectService;
 import com.example.demo.subject.enumeration.Status;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +35,15 @@ public class SubjectController {
         return subjectService.getSubjectsByCredits(credits);
     }
 
+    @GetMapping("/api/subjects/lastname")
+    public List<SubjectListDto> getSubjectsByTeacherFirstName(@RequestParam(required = false) String lastname) {
+        return subjectService.getSubjectsByTeacherLastName(lastname);
+    }
+
+    @GetMapping("/api/subjects/firstname")
+    public List<SubjectListDto> getSubjectsByTeacherLastName(@RequestParam(required = false) String firstname) {
+        return subjectService.getSubjectsByTeacherFirstName(firstname);
+    }
 
     @GetMapping("/api/subjects/{subjectId}")
     public SubjectListDto getSubjectsById(@PathVariable Long subjectId){
