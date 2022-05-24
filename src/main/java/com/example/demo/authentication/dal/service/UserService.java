@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -42,6 +43,7 @@ public class UserService implements UserDetailsService {
         userDto.setLastName(userEntity.getLastName());
         userDto.setEmail(userEntity.getEmail());
         userDto.setPhone(userEntity.getPhone());
+        userDto.setDateOfRegistration(userEntity.getDateOfRegistration());
         List<String> rolesNames = new LinkedList<>();
         for(RoleEntity roles: userEntity.getRoles()){
             rolesNames.add(roles.getRoleName());
@@ -68,6 +70,7 @@ public class UserService implements UserDetailsService {
         userEntity.setEmail(user.getEmail());
         userEntity.setPhone(user.getPhone());
         userEntity.setRoles(retrieveRolesFromDto(user));
+        userEntity.setDateOfRegistration(LocalDateTime.now());
         userEntity.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
         this.userRepository.save(userEntity);
 

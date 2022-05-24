@@ -1,9 +1,13 @@
 package com.example.demo.authentication.dal.entity;
 
+import com.example.demo.subject.entity.SubjectEntity;
+import com.example.demo.subject.entity.SubjectStudentEntity;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,6 +29,8 @@ public class UserEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<RoleEntity> roles = new HashSet<>();
 
+
+    private LocalDateTime dateOfRegistration;
     private String firstName;
     private String lastName;
     private String email;
@@ -92,6 +98,14 @@ public class UserEntity {
 
     public void setRoles(Set<RoleEntity> roles) {
         this.roles = roles;
+    }
+
+    public LocalDateTime getDateOfRegistration() {
+        return dateOfRegistration;
+    }
+
+    public void setDateOfRegistration(LocalDateTime dateOfRegistration) {
+        this.dateOfRegistration = dateOfRegistration;
     }
 
 }

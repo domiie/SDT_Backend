@@ -1,10 +1,14 @@
 package com.example.demo.subject.service;
 
+import com.example.demo.subject.enumeration.Language;
+import com.example.demo.subject.enumeration.Semester;
 import com.example.demo.subject.enumeration.Status;
+import com.example.demo.subject.enumeration.SubjectType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class SubjectListDto {
     private Long id;
@@ -12,21 +16,27 @@ public class SubjectListDto {
     private Long teacherId;
     private String teacherFirstName;
     private String teacherLastName;
+    private List<Long> subscribedStudents;
     private int hours;
     private int credit;
     private Status status;
-    private boolean isLocked;
+    private SubjectType subjectType;
+    private String subjectCode;
+    private Semester semester;
+    private Language language;
+    private String abbreviation;
+    private boolean accessible;
     @JsonFormat(locale = "en", pattern = "MMM dd, yyyy")
     private LocalDate creationDate;
     @JsonFormat(locale = "en", pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime lastChangeDate;
 
-    public boolean isLocked() {
-        return isLocked;
+    public boolean isAccessible() {
+        return accessible;
     }
 
-    public void setLocked(boolean locked) {
-        isLocked = locked;
+    public void setAccessible(boolean accessible) {
+        this.accessible = accessible;
     }
 
     public LocalDateTime getLastChangeDate() {
@@ -109,4 +119,52 @@ public class SubjectListDto {
         this.credit = credit;
     }
 
+    public List<Long> getSubscribedStudents() {
+        return subscribedStudents;
+    }
+
+    public void setSubscribedStudents(List<Long> subscribedStudents) {
+        this.subscribedStudents = subscribedStudents;
+    }
+
+    public SubjectType getSubjectType() {
+        return subjectType;
+    }
+
+    public void setSubjectType(SubjectType subjectType) {
+        this.subjectType = subjectType;
+    }
+
+    public String getAbbreviation() {
+        return abbreviation;
+    }
+
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
+    }
+
+
+    public String getSubjectCode() {
+        return subjectCode;
+    }
+
+    public void setSubjectCode(String subjectCode) {
+        this.subjectCode = subjectCode;
+    }
+
+    public Semester getSemester() {
+        return semester;
+    }
+
+    public void setSemester(Semester semester) {
+        this.semester = semester;
+    }
+
+    public Language getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Language language) {
+        this.language = language;
+    }
 }

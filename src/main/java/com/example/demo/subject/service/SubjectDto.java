@@ -1,10 +1,14 @@
 package com.example.demo.subject.service;
 
+import com.example.demo.subject.enumeration.Language;
+import com.example.demo.subject.enumeration.Semester;
 import com.example.demo.subject.enumeration.Status;
+import com.example.demo.subject.enumeration.SubjectType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class SubjectDto {
     private Long id;
@@ -12,15 +16,24 @@ public class SubjectDto {
     private Long teacherId;
     private int hours;
     private int credit;
+    private SubjectType subjectType;
+    private String abbreviation;
     private Status status;
-    private boolean isLocked;
+    private String subjectCode;
+    private Semester semester;
+    private Language language;
+    private boolean accessible;
+    private String teacherFirstName;
+    private String teacherLastName;
 
-    public boolean isLocked() {
-        return isLocked;
+    private List<Long> subscribedStudents;
+
+    public boolean isAccessible() {
+        return accessible;
     }
 
-    public void setLocked(boolean locked) {
-        isLocked = locked;
+    public void setAccessible(boolean accessible) {
+        this.accessible = accessible;
     }
 
     @JsonFormat(locale = "en", pattern = "YYYY-MM-dd")
@@ -91,6 +104,71 @@ public class SubjectDto {
 
     public void setCredit(int credit) {
         this.credit = credit;
+    }
+
+    public List<Long> getSubscribedStudents() {
+        return subscribedStudents;
+    }
+
+    public void setSubscribedStudents(List<Long> subscribedStudents) {
+        this.subscribedStudents = subscribedStudents;
+    }
+
+
+    public String getTeacherFirstName() {
+        return teacherFirstName;
+    }
+
+    public void setTeacherFirstName(String teacherFirstName) {
+        this.teacherFirstName = teacherFirstName;
+    }
+
+    public String getTeacherLastName() {
+        return teacherLastName;
+    }
+
+    public void setTeacherLastName(String teacherLastName) {
+        this.teacherLastName = teacherLastName;
+    }
+
+    public SubjectType getSubjectType() {
+        return subjectType;
+    }
+
+    public void setSubjectType(SubjectType subjectType) {
+        this.subjectType = subjectType;
+    }
+
+    public String getAbbreviation() {
+        return abbreviation;
+    }
+
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
+    }
+
+    public String getSubjectCode() {
+        return subjectCode;
+    }
+
+    public void setSubjectCode(String subjectCode) {
+        this.subjectCode = subjectCode;
+    }
+
+    public Semester getSemester() {
+        return semester;
+    }
+
+    public void setSemester(Semester semester) {
+        this.semester = semester;
+    }
+
+    public Language getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Language language) {
+        this.language = language;
     }
 
 

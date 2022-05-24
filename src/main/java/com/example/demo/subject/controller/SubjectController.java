@@ -4,7 +4,7 @@ import com.example.demo.subject.service.SubjectDto;
 import com.example.demo.subject.service.SubjectListDto;
 import com.example.demo.subject.service.SubjectService;
 import com.example.demo.subject.enumeration.Status;
-import org.springframework.security.access.prepost.PreAuthorize;
+import com.example.demo.subject.service.SubscribeDto;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,4 +43,35 @@ public class SubjectController {
     public void updateSubject(@PathVariable Long subjectId, @RequestBody SubjectDto subjectDto){
         subjectService.updateSubject(subjectId, subjectDto);
     }
+
+    @PutMapping("/api/subjects/lock")
+    public void lockSubjects(){
+        subjectService.lockSubjects();
+    }
+
+    @PutMapping("/api/subjects/unlock")
+    public void unlockSubjects(){
+        subjectService.unlockSubjects();
+    }
+
+    @PutMapping("/api/subjects/lock/{subjectId}")
+    public void lockSubjectById(@PathVariable Long subjectId){
+        subjectService.lockSubjectById(subjectId);
+    }
+
+    @PostMapping("/api/subjects/subscribe")
+    public void lockSubjectById(@RequestBody SubscribeDto subscribeDto){
+          subjectService.subscribeForSubject(subscribeDto);
+    }
+
+    @GetMapping("/api/subjects/subscribe/{subjectId}/{studentId}")
+    public SubscribeDto getSubscription(@PathVariable Long subjectId, @PathVariable Long studentId){
+        return subjectService.getSubscription(subjectId, studentId);
+    }
+
+    @DeleteMapping("/api/subjects/unsubscribe")
+    public void unsubscribeSubject(@RequestBody SubscribeDto subscribeDto){
+        subjectService.unsubscribeFromSubject(subscribeDto);
+    }
+
 }

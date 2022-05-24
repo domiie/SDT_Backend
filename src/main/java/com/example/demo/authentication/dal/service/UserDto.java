@@ -1,5 +1,9 @@
 package com.example.demo.authentication.dal.service;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class UserDto {
@@ -12,6 +16,10 @@ public class UserDto {
     private String passwordHash;
     private List<String> roles;
     private Long roleId;
+
+    @JsonFormat(locale = "en", pattern = "YYYY-MM-dd")
+    private LocalDateTime dateOfRegistration;
+
 
     public List<String> getRoles() {
         return roles;
@@ -83,6 +91,15 @@ public class UserDto {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+
+    public LocalDateTime getDateOfRegistration() {
+        return dateOfRegistration;
+    }
+
+    public void setDateOfRegistration(LocalDateTime dateOfRegistration) {
+        this.dateOfRegistration = dateOfRegistration;
     }
 
 }
