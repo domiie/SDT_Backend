@@ -23,7 +23,7 @@ public class SubjectService {
     private final SubjectRepository subjectRepository;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private SubscriptionsRepository subscriptionsRepository;
+    private final SubscriptionsRepository subscriptionsRepository;
 
     public SubjectService(SubjectRepository subjectRepository, UserRepository userRepository,
                           RoleRepository roleRepository, SubscriptionsRepository subscriptionsRepository){
@@ -31,6 +31,14 @@ public class SubjectService {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.subscriptionsRepository = subscriptionsRepository;
+    }
+
+    private static List<Long> retrieveStudents(SubjectEntity course){
+        List<Long> students = new LinkedList<>();
+        for(SubjectStudentEntity user : course.getSubscribedUsers()){
+            students.add(user.getUserEntity().getId());
+        }
+        return students;
     }
 
     private SubjectListDto mapToSubjectDto(SubjectEntity subjectEntity) {
@@ -57,27 +65,19 @@ public class SubjectService {
         return subjectListDto;
     }
 
-    private List<Long> retrieveStudents(SubjectEntity course){
-        List<Long> students = new LinkedList<>();
-        for(SubjectStudentEntity user : course.getSubscribedUsers()){
-            students.add(user.getUserEntity().getId());
-        }
-        return students;
-    }
-
     @Transactional
     public List<SubjectListDto> getSubjects(Status status) {
         List<SubjectListDto> subjects = new LinkedList<>();
 
         if(status!=null){
-            for (SubjectEntity b1 : subjectRepository.findByStatus(status)) {
-                SubjectListDto b2 = mapToSubjectDto(b1);
-                subjects.add(b2);
+            for (SubjectEntity course : subjectRepository.findByStatus(status)) {
+                SubjectListDto foundCourse = mapToSubjectDto(course);
+                subjects.add(foundCourse);
             }
         }else {
-            for (SubjectEntity b1 : subjectRepository.findAll()) {
-                SubjectListDto b2 = mapToSubjectDto(b1);
-                subjects.add(b2);
+            for (SubjectEntity course : subjectRepository.findAll()) {
+                SubjectListDto foundCourse = mapToSubjectDto(course);
+                subjects.add(foundCourse);
             }
         }
 
@@ -88,12 +88,7 @@ public class SubjectService {
     @Transactional
     public SubjectListDto getSubjectByName(String subjectName){
         Optional<SubjectEntity> byTitle = subjectRepository.findBySubjectName(subjectName);
-
-        if(byTitle.isPresent()){
-            return mapToSubjectDto(byTitle.get());
-        }
-
-        return null;
+        return byTitle.map(this::mapToSubjectDto).orElse(null);
     }
 
     @Transactional
@@ -127,9 +122,7 @@ public class SubjectService {
     @Transactional
     public void deleteSubject(Long subjectId){
         Optional<SubjectEntity> byId = subjectRepository.findById(subjectId);
-        if (byId.isPresent()) {
-            subjectRepository.delete(byId.get());
-        }
+        byId.ifPresent(subjectRepository::delete);
     }
 
 
@@ -140,8 +133,8 @@ public class SubjectService {
             if(subjectDto.getStatus().equals(Status.CANCELLED)) {
                 SubscribeDto subscribeDto = new SubscribeDto();
                 subscribeDto.setSubjectId(subjectId);
-                for(SubjectStudentEntity s: byId.get().getSubscribedUsers()){
-                    subscribeDto.setStudentId(s.getUserEntity().getId());
+                for(SubjectStudentEntity subscription: byId.get().getSubscribedUsers()){
+                    subscribeDto.setStudentId(subscription.getUserEntity().getId());
                     unsubscribeFromSubject(subscribeDto);
                 }
             }
@@ -188,7 +181,7 @@ public class SubjectService {
         subscription.setUserEntity(student.get());
         Optional<RoleEntity> role = this.roleRepository.findByRoleName("ROLE_STUDENT");
         if(student.get().getRoles().contains(role.get())){
-            if(course.get().isAccessible()){
+            if(course.get().isAccessible() && !course.get().getStatus().equals(Status.REFUSED)){
                 course.get().getSubscribedUsers().add(subscription);
                 subscription.setDateOfRegistration(LocalDateTime.now());
                 subscription.setLastModifiedDate(LocalDateTime.now());
@@ -205,9 +198,7 @@ public class SubjectService {
     @Transactional
     public void unsubscribeFromSubject(SubscribeDto subscribeDto){
         Optional<SubjectStudentEntity> byId =  this.subscriptionsRepository.findBySubjectEntityIdAndUserEntityId(subscribeDto.getSubjectId(), subscribeDto.getStudentId());
-        if(byId.isPresent()){
-            subscriptionsRepository.delete(byId.get());
-        }
+        byId.ifPresent(subscriptionsRepository::delete);
     }
 
     @Transactional
