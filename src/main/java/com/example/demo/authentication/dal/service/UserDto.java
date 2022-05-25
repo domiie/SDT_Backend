@@ -17,7 +17,7 @@ public class UserDto {
     private List<String> roles;
     private Long roleId;
 
-    @JsonFormat(locale = "en", pattern = "YYYY-MM-dd")
+    @JsonFormat(locale = "en", pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime dateOfRegistration;
 
 
