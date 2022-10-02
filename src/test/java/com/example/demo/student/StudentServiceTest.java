@@ -22,7 +22,6 @@ class StudentServiceTest {
     @Test
     public void studentServiceCreateValid(){
         Long generatedId = 1L;
-
         StudentEntity fakeEntity = new StudentEntity();
         fakeEntity.setId(generatedId);
         fakeEntity.setFirstName("Adela");
