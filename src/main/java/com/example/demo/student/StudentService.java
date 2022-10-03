@@ -40,9 +40,9 @@ public class StudentService {
         studentEntity.setPhone(student.getPhone());
         studentEntity.setKeyword(student.getKeyword());
 
-        this.studentRepository.save(studentEntity);
+        return this.studentRepository.save(studentEntity).getId();
 
-        return studentEntity.getId();
+//        return studentEntity.getId();
     }
 
     @Transactional

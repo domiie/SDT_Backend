@@ -54,10 +54,11 @@ class StudentServiceTest {
         studentDto.setKeyword("hauko");
         studentDto.setPhone("0915182404");
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> studentService.createStudent(studentDto));
-        assertEquals("Meno alebo Priezvisko sú prázdne", exception.getMessage());
+        when(studentRepository.save(any())).thenThrow(IllegalArgumentException.class);
 
-        verify(studentRepository, times(0)).save(any());
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> studentService.createStudent(studentDto));
+
+        verify(studentRepository, times(1)).save(any());
     }
 
     @Test
