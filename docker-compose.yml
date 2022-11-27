@@ -1,7 +1,7 @@
 version: "3.3"
 
 services:
-  library:
+  library-db:
     restart: always
     image: sameersbn/postgresql:10-2
     environment:
@@ -16,6 +16,20 @@ services:
     volumes:
       - data:/var/lib/postgresql
       - logs:/var/log/postgresql
+
+  backend:
+    image: sdt-backend
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - library-db
+
+  frontend:
+    image: sdt-frontend
+    ports:
+      - "80:80"
+#    links:
+#      - backend
 
 volumes:
   data:
