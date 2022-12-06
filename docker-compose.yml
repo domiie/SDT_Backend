@@ -19,17 +19,17 @@ services:
 
   backend:
     image: sdt-backend
-#    ports:
-#      - "8080:8080"
-#    depends_on:
-#      - library-db
+    ports:
+      - "8080:8080"
+    #depends_on:
+     # - library-db
 
   frontend:
     image: sdt-frontend
     ports:
       - "80:80"
-#    links:
-#      - backend
+    #links:
+    #  - backend
 
 volumes:
   data:

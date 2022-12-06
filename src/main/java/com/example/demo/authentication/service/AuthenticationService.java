@@ -73,6 +73,7 @@ public class AuthenticationService {
 
     @Transactional
     public UserRolesDto authenticate(String token) {
+        System.out.println("qqqqqqqqqqqqqqqqqq3:" + token);
         Optional<TokenEntity> optionalToken = tokenRepository.findByToken(token);
 
         if (optionalToken.isEmpty()) {

@@ -14,12 +14,10 @@ public class CorsConfig implements WebMvcConfigurer
         // ak bude iny link pre registraciu, tak by ho malo stacit pridat do tohto addMapping:
         // .addMapping("/api/authentication", "/api/registration")
 
-        registry.addMapping("/api/authentication")
-                .exposedHeaders("Authorization")
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedOrigins("http://localhost:4200");
         registry.addMapping("/**")
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedOrigins("http://localhost:4200");
+                .allowedMethods("*")
+                .allowedOrigins("*")
+                .allowedHeaders("Authorization")
+                .exposedHeaders("Authorization");
     }
 }

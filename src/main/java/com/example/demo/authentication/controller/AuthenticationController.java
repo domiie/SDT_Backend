@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Optional;
 
@@ -32,8 +33,12 @@ public class AuthenticationController {
         String token = authenticationService.authenticate(credentials[0], credentials[1]);
 
         response.setStatus(HttpStatus.OK.value());
+        System.out.println("qqqqqqqqqqqqqqqqqq1: " + token);
         response.addHeader(AUTHORIZATION_HEADER, "Bearer " + token);
-        return authenticationService.authenticate(token);
+        System.out.println("qqqqqqqqqqqqqqqqqq2: " + Arrays.toString(response.getHeaderNames().toArray()));
+        UserRolesDto ret = authenticationService.authenticate(token);
+        System.out.println("qqqqqqqqqqqqqqqqqq4: " + ret);
+        return ret;
     }
 
     private static String[] credentialsDecode(String authorization) {
